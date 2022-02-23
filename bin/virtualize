@@ -1,0 +1,134 @@
+#!/bin/bash
+
+function install_tool_node() {
+    #FIXME ignoring version for now
+    if [[ ! $VIRTUALIZE_ROOT ]]; then
+        echo "Error: VIRTUALIZE_ROOT not found, something is wrong"
+        exit 33;
+    fi
+
+    if [[ -d $VIRTUALIZE_ROOT/node ]]; then
+        echo "node seems to already be installed"
+        exit
+    fi
+
+    VERSION=16.13.2
+    if [[ $1 ]]; then
+        VERSION="$1"
+    fi
+    git subtree add --prefix $VIRTUALIZE_ROOT/node git@github.com:mitmedialab/local-node-install.git main --squash
+    $VIRTUALIZE_ROOT/node/install.sh $VIRTUALIZE_ROOT/node/node $VERSION
+}
+
+
+function install_tool_python() {
+    echo "sorry, not supported yet"
+    exit 33
+}
+
+
+function install_tool_macports() {
+    echo "sorry, not supported yet"
+    exit 33
+}
+
+
+function install_tool_homebrew() {
+    echo "sorry, not supported yet"
+    exit 33
+}
+
+
+function add_virtual_tool() {
+    case "$1" in
+        node) install_tool_node "$@"; exit ;;
+        python) install_tool_python "$@"; exit ;;
+        macports) install_tool_macports "$@"; exit ;;
+        homebrew) install_tool_homebrew "$@"; exit ;;
+        *) echo "unknown tool $1, type 'virtualize help' for list of tools"; exit ;;
+    esac
+}
+
+
+display_help() {
+  cat <<-EOF
+
+Usage: virtualize [options] [COMMAND] [args]
+
+Commands:
+
+  add <tool> [version]   Add the given virtualize tool, at the optional [verison]
+  rem <tool>             Remove the virtualize tool
+  list                   Show list of installed virtualize tools and their versions
+
+Options:
+
+  -V, --version         Output version of n
+  -h, --help            Display help information
+
+Aliases:
+
+  remove: rem
+  ls: list
+
+Tools:
+
+  node
+  python
+  macports
+  homebrew
+
+EOF
+}
+
+#
+# Handle arguments.
+#
+
+# First pass. Process the options so they can come before or after commands,
+# particularly for `n lsr --all` and `n install --arch x686`
+# which feel pretty natural.
+
+unprocessed_args=()
+positional_arg="false"
+
+while [[ $# -ne 0 ]]; do
+    case "$1" in
+        -V|--version) display_virtualize_version ;;
+        -h|--help|help) display_help; exit ;;
+
+        exec|run|as|use)
+            unprocessed_args+=( "$1" )
+            positional_arg="true"
+            ;;
+        *)
+            if [[ "${positional_arg}" == "true" ]]; then
+                unprocessed_args+=( "$@" )
+                break
+            fi
+            unprocessed_args+=( "$1" )
+            ;;
+    esac
+    shift
+done
+
+set -- "${unprocessed_args[@]}"
+
+if test $# -eq 0; then
+    #test -z "$(display_versions_paths)" && err_no_installed_print_help
+    #menu_select_cache_versions
+    display_help
+else
+    while test $# -ne 0; do
+        case "$1" in
+            help) display_help; exit ;;
+            add) add_virtual_tool "$2" "$3"; exit ;;
+            #bin|which) display_bin_path_for_version "$2"; exit ;;
+            #run|as|use) shift; run_with_version "$@"; exit ;;
+            #doctor) show_diagnostics; exit ;;
+            #ls|list) display_versions_paths; exit ;;
+            #*) install "$1"; exit ;;
+        esac
+    shift
+  done
+fi

@@ -1,0 +1,80 @@
+if [[ "${BASH_SOURCE-}" = "$0" ]]; then
+    echo "You must source this script: \$ source $0" >&2
+    exit 33
+fi
+
+# ANSI escape codes
+# https://en.wikipedia.org/wiki/ANSI_escape_code
+# https://no-color.org
+# https://bixense.com/clicolors
+
+USE_COLOR="true"
+#readonly USE_COLOR
+# Select Graphic Rendition codes
+if [[ "${USE_COLOR}" = "true" ]]; then
+  # KISS and use codes rather than tput, avoid dealing with missing tput or TERM.
+  SGR_RESET="[0m"
+  SGR_FAINT="[2m"
+  SGR_RED="[31m"
+  SGR_BOLD_BLUE="[01;34m"  # bold+blue
+  SGR_CYAN="[36m"
+else
+  SGR_RESET=
+  SGR_FAINT=
+  SGR_RED=
+  SGR_CYAN=
+fi
+
+if [[ ! -z $VIRTUALIZE_ROOT ]]; then
+    echo "${SGR_RED}This shell is already virtualized for $VIRTUALIZE_ROOT, type 'unactivate' to undo${SGR_RESET}"
+    return
+fi
+
+
+export VIRTUALIZE_ROOT=`pwd`
+echo "activating virtualize for $VIRTUALIZE_ROOT"
+
+VIRTUALIZE_ORIG_PATH="$PATH"
+VIRTUALIZE_ORIG_PS1="$PS1"
+export PATH=$VIRTUALIZE_ROOT/bin:$VIRTUALIZE_ROOT/virtualize/bin:$PATH
+
+VIRTUALIZE_ROOT_DISPLAY="`echo $VIRTUALIZE_ROOT | sed \"s%^$HOME/%%" | sed 's/\//·/g'`"
+if [[ $ZSH_VERSION ]]; then
+   PS1="%{${SGR_BOLD_BLUE}%}[$VIRTUALIZE_ROOT_DISPLAY]%{${SGR_RESET}%}$PS1"
+else  # for bash (and others?)
+   PS1="${SGR_BOLD_BLUE}[$VIRTUALIZE_ROOT_DISPLAY]${SGR_RESET}\n$PS1"
+fi
+
+VIRTUALIZE_LIST=()
+for activate in */activate; do
+    if [[ $activate == "virtualize/activate" ]]; then
+        continue
+    fi
+    VIRTUALIZE_ACTIVATING="`dirname $activate`"
+    echo "activating $VIRTUALIZE_ACTIVATING"
+    source $activate
+    VIRTUALIZE_LIST+=($VIRTUALIZE_ACTIVATING)
+    unset VIRTUALIZE_ACTIVATING
+done
+
+function unactivate() {
+    local unactivate
+    for unactivate in "${VIRTUALIZE_LIST[@]}"; do
+        echo "unactivating $unactivate"
+        "unactivate_${unactivate}"
+        unset -f unactivate_${unactivate}
+    done
+    unset VIRTUALIZE_LIST
+
+    PATH="$VIRTUALIZE_ORIG_PATH"
+    PS1="$VIRTUALIZE_ORIG_PS1"
+    unset VIRTUALIZE_ORIG_PATH
+    unset VIRTUALIZE_ORIG_PS1
+    unset VIRTUALIZE_ROOT_DISPLAY
+    local virtualize_root="$VIRTUALIZE_ROOT"
+    unset VIRTUALIZE_ROOT
+    unset -f unactivate
+    echo "unactivated $virtualize_root"
+}
+
+echo "type 'unactivate' to undo"
