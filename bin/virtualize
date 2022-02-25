@@ -40,8 +40,29 @@ function install_tool_macports() {
 
 
 function install_tool_homebrew() {
-    echo "sorry, not supported yet"
-    exit 33
+    #FIXME ignoring version for now
+    if [[ ! $VIRTUALIZE_ROOT ]]; then
+        echo "Error: VIRTUALIZE_ROOT not found, something is wrong"
+        exit 33;
+    fi
+
+    if [[ -d $VIRTUALIZE_ROOT/homebrew ]]; then
+        echo "homebrew seems to already be installed (homebrew directory exists)"
+        exit
+    fi
+
+    # VERSION=16.13.2
+    # if [[ $2 ]]; then
+    #     VERSION="$2"
+    # fi
+    $(
+        cd $VIRTUALIZE_ROOT
+        #git subtree add --prefix homebrew git@github.com:mitmedialab/local-homebrew-install.git main --squash || exit
+        git submodule add git@github.com:mitmedialab/virtualize-homebrew homebrew
+        #./homebrew/install.sh
+        cd $VIRTUALIZE_ROOT/homebrew
+        ./install.sh
+    )
 }
 
 
