@@ -8,16 +8,22 @@ function install_tool_node() {
     fi
 
     if [[ -d $VIRTUALIZE_ROOT/node ]]; then
-        echo "node seems to already be installed"
+        echo "node seems to already be installed (node directory exists)"
         exit
     fi
 
     VERSION=16.13.2
-    if [[ $1 ]]; then
-        VERSION="$1"
+    if [[ $2 ]]; then
+        VERSION="$2"
     fi
-    git subtree add --prefix $VIRTUALIZE_ROOT/node git@github.com:mitmedialab/local-node-install.git main --squash
-    $VIRTUALIZE_ROOT/node/install.sh $VIRTUALIZE_ROOT/node/node $VERSION
+    $(
+        cd $VIRTUALIZE_ROOT
+        #git subtree add --prefix node git@github.com:mitmedialab/local-node-install.git main --squash || exit
+        git submodule add git@github.com:mitmedialab/local-node-install.git node
+        #./node/install.sh $VIRTUALIZE_ROOT/node/node $VERSION
+        cd $VIRTUALIZE_ROOT/node
+        ./install.sh
+    )
 }
 
 
