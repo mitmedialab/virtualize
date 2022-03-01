@@ -6,7 +6,7 @@ if [[ -e activate ]]; then
 fi
 
 ln -s virtualize/activate ./activate
-echo "./activate installed"
+echo "installed ./activate file"
 
 
 
@@ -38,12 +38,12 @@ git submodule update
 # pip install -f requirments.txt
 EOF
 
-chmod +x 
+chmod +x install.sh
 
 echo "added install.sh template, edit it to suit your project"
 echo
 echo "done installing virtualize"
-echo "be sure to commit the new files"
+echo "be sure to commit the new files including .gitmodules"
 echo
 echo "to start using virtualize:"
 echo "  source ./activate"
