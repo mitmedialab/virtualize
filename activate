@@ -8,6 +8,7 @@ fi
 # https://no-color.org
 # https://bixense.com/clicolors
 
+# FIXME this leaks variables all over the place
 USE_COLOR="true"
 #readonly USE_COLOR
 # Select Graphic Rendition codes
