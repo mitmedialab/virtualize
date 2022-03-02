@@ -7,8 +7,8 @@ function install_tool_node() {
         exit 33;
     fi
 
-    if [[ -d $VIRTUALIZE_ROOT/node ]]; then
-        echo "node seems to already be installed (node directory exists)"
+    if [[ -d $VIRTUALIZE_ROOT/virtualize-node ]]; then
+        echo "virtualize-node node seems to already be installed"
         exit
     fi
 
@@ -18,9 +18,9 @@ function install_tool_node() {
     fi
     (
         cd $VIRTUALIZE_ROOT
-        git submodule add git@github.com:mitmedialab/local-node-install.git node
-        #./node/install.sh $VIRTUALIZE_ROOT/node/node $VERSION
-        cd $VIRTUALIZE_ROOT/node
+        git submodule add git@github.com:mitmedialab/local-node-install.git virtualize-node
+        #./node/install.sh $VIRTUALIZE_ROOT/virtualize-node/node $VERSION
+        cd $VIRTUALIZE_ROOT/virtualize-node
 	git checkout jon/virtualize  # FIXME take this off when jon/virtualize is merged into main
         ./install.sh
     )
@@ -33,12 +33,6 @@ function install_tool_python() {
 }
 
 
-function install_tool_macports() {
-    echo "sorry, not supported yet"
-    exit 33
-}
-
-
 function install_tool_homebrew() {
     #FIXME ignoring version for now
     if [[ ! $VIRTUALIZE_ROOT ]]; then
@@ -46,20 +40,36 @@ function install_tool_homebrew() {
         exit 33;
     fi
 
-    if [[ -d $VIRTUALIZE_ROOT/homebrew ]]; then
-        echo "homebrew seems to already be installed (homebrew directory exists)"
+    if [[ -d $VIRTUALIZE_ROOT/virtualize-homebrew ]]; then
+        echo "virtualize-homebrew seems to already be installed"
         exit
     fi
 
-    # VERSION=16.13.2
-    # if [[ $2 ]]; then
-    #     VERSION="$2"
-    # fi
     (
         cd $VIRTUALIZE_ROOT
-        git submodule add git@github.com:mitmedialab/virtualize-homebrew homebrew
-        #./homebrew/install.sh
-        cd $VIRTUALIZE_ROOT/homebrew
+        git submodule add git@github.com:mitmedialab/virtualize-homebrew
+        cd $VIRTUALIZE_ROOT/virtualize-homebrew
+        ./install.sh
+    )
+}
+
+
+function install_tool_macports() {
+    #FIXME ignoring version for now
+    if [[ ! $VIRTUALIZE_ROOT ]]; then
+        echo "Error: VIRTUALIZE_ROOT not found, something is wrong"
+        exit 33;
+    fi
+
+    if [[ -d $VIRTUALIZE_ROOT/virtualize-macports ]]; then
+        echo "virtualize-macports seems to already be installed"
+        exit
+    fi
+
+    (
+        cd $VIRTUALIZE_ROOT
+        git submodule add git@github.com:mitmedialab/virtualize-macports
+        cd $VIRTUALIZE_ROOT/virtualize-macports
         ./install.sh
     )
 }
