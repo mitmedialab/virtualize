@@ -1,4 +1,7 @@
-if [[ "${BASH_SOURCE-}" = "$0" ]]; then
+#https://unix.stackexchange.com/a/153061
+VIRTUALIZE_SOURCED_NAME="$_"
+
+if [[ $BASH_SOURCE ]]; then
     echo "You must source this script: \$ source $0" >&2
     exit 33
 fi
@@ -31,8 +34,7 @@ if [[ ! -z $VIRTUALIZE_ROOT ]]; then
     return
 fi
 
-
-export VIRTUALIZE_ROOT=`pwd`
+export VIRTUALIZE_ROOT=$( cd -- "$( dirname -- "${VIRTUALIZE_SOURCED_NAME}" )" &> /dev/null && pwd )
 echo "activating virtualize for $VIRTUALIZE_ROOT"
 
 VIRTUALIZE_ORIG_PATH="$PATH"
@@ -72,6 +74,7 @@ function unactivate() {
     unset VIRTUALIZE_ORIG_PATH
     unset VIRTUALIZE_ORIG_PS1
     unset VIRTUALIZE_ROOT_DISPLAY
+    unset VIRTUALIZE_SOURCED_NAME
     local virtualize_root="$VIRTUALIZE_ROOT"
     unset VIRTUALIZE_ROOT
     unset -f unactivate
