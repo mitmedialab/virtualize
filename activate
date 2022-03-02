@@ -47,11 +47,8 @@ else  # for bash (and others?)
 fi
 
 VIRTUALIZE_LIST=()
-for activate in */activate; do
-    if [[ $activate == "virtualize/activate" ]]; then
-        continue
-    fi
-    VIRTUALIZE_ACTIVATING="`dirname $activate`"
+for activate in virtualize-*/activate; do
+    VIRTUALIZE_ACTIVATING=$(dirname $activate | sed 's/^virtualize-//')
     echo "activating $VIRTUALIZE_ACTIVATING"
     source $activate
     VIRTUALIZE_LIST+=($VIRTUALIZE_ACTIVATING)
