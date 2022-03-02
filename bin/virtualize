@@ -17,7 +17,6 @@ function install_tool_node() {
         VERSION="$2"
     fi
     (
-	echo a $VIRTUALIZE_ROOT
         cd $VIRTUALIZE_ROOT
         git submodule add git@github.com:mitmedialab/local-node-install.git node
         #./node/install.sh $VIRTUALIZE_ROOT/node/node $VERSION
