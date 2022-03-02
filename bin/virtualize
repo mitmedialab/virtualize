@@ -16,7 +16,7 @@ function install_tool_node() {
     if [[ $2 ]]; then
         VERSION="$2"
     fi
-    $(
+    (
 	echo a $VIRTUALIZE_ROOT
         cd $VIRTUALIZE_ROOT
         git submodule add git@github.com:mitmedialab/local-node-install.git node
@@ -56,7 +56,7 @@ function install_tool_homebrew() {
     # if [[ $2 ]]; then
     #     VERSION="$2"
     # fi
-    $(
+    (
         cd $VIRTUALIZE_ROOT
         git submodule add git@github.com:mitmedialab/virtualize-homebrew homebrew
         #./homebrew/install.sh
