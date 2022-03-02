@@ -25,7 +25,7 @@ function install_tool_node() {
         ./install.sh
     )
     echo
-    echo "Before you can use node in your shell you will need to:"
+    echo "before you can use node in your shell you will need to:"
     echo "  unactivate"
     echo "  source ./activate"
 }
@@ -56,7 +56,7 @@ function install_tool_homebrew() {
         ./install.sh
     )
     echo
-    echo "Before you can use brew (homebrew) your shell you will need to:"
+    echo "before you can use brew (homebrew) your shell you will need to:"
     echo "  unactivate"
     echo "  source ./activate"
 }
@@ -81,7 +81,7 @@ function install_tool_macports() {
         ./install.sh
     )
     echo
-    echo "Before you can use port (macports) your shell you will need to:"
+    echo "before you can use port (macports) your shell you will need to:"
     echo "  unactivate"
     echo "  source ./activate"
 }
