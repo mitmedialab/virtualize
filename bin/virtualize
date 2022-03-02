@@ -17,14 +17,20 @@ function install_tool_node() {
         VERSION="$2"
     fi
     $(
+	echo a $VIRTUALIZE_ROOT
         cd $VIRTUALIZE_ROOT
-        #git subtree add --prefix node git@github.com:mitmedialab/local-node-install.git main --squash || exit
+	echo b
         git submodule add git@github.com:mitmedialab/local-node-install.git node
+	echo c
         #./node/install.sh $VIRTUALIZE_ROOT/node/node $VERSION
         cd $VIRTUALIZE_ROOT/node
+	echo d
 	git checkout jon/virtualize  # FIXME take this off when jon/virtualize is merged into main
+	echo e
         ./install.sh
+	echo f
     )
+    echo g
 }
 
 
@@ -58,7 +64,6 @@ function install_tool_homebrew() {
     # fi
     $(
         cd $VIRTUALIZE_ROOT
-        #git subtree add --prefix homebrew git@github.com:mitmedialab/local-homebrew-install.git main --squash || exit
         git submodule add git@github.com:mitmedialab/virtualize-homebrew homebrew
         #./homebrew/install.sh
         cd $VIRTUALIZE_ROOT/homebrew
