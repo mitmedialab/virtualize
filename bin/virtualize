@@ -1,7 +1,6 @@
 #!/bin/bash
 
 function install_tool_node() {
-    #FIXME ignoring version for now
     if [[ ! $VIRTUALIZE_ROOT ]]; then
         echo "Error: VIRTUALIZE_ROOT not found, something is wrong"
         exit 33;
@@ -22,7 +21,7 @@ function install_tool_node() {
         #./node/install.sh $VIRTUALIZE_ROOT/virtualize-node/node $VERSION
         cd $VIRTUALIZE_ROOT/virtualize-node
 	git checkout jon/virtualize  # FIXME take this off when jon/virtualize is merged into main
-        ./install.sh
+        ./install.sh $VERSION
     )
     echo
     echo "before you can use node in your shell you will need to:"
@@ -32,8 +31,30 @@ function install_tool_node() {
 
 
 function install_tool_python() {
-    echo "sorry, not supported yet"
-    exit 33
+    if [[ ! $VIRTUALIZE_ROOT ]]; then
+        echo "Error: VIRTUALIZE_ROOT not found, something is wrong"
+        exit 33;
+    fi
+
+    if [[ -d $VIRTUALIZE_ROOT/virtualize-python ]]; then
+        echo "virtualize-python seems to already be installed"
+        exit
+    fi
+
+    VERSION=3
+    if [[ $2 ]]; then
+        VERSION="$2"
+    fi
+    (
+        cd $VIRTUALIZE_ROOT
+        git submodule add git@github.com:mitmedialab/virtualize-python
+        cd $VIRTUALIZE_ROOT/virtualize-python
+        ./install.sh $VERSION
+    )
+    echo
+    echo "before you can use python your shell you will need to:"
+    echo "  unactivate"
+    echo "  source ./activate"
 }
 
 
@@ -56,7 +77,7 @@ function install_tool_homebrew() {
         ./install.sh
     )
     echo
-    echo "before you can use brew (homebrew) your shell you will need to:"
+    echo "before you can use brew (homebrew) in your shell you will need to:"
     echo "  unactivate"
     echo "  source ./activate"
 }
@@ -81,7 +102,7 @@ function install_tool_macports() {
         ./install.sh
     )
     echo
-    echo "before you can use port (macports) your shell you will need to:"
+    echo "before you can use port (macports) in your shell you will need to:"
     echo "  unactivate"
     echo "  source ./activate"
 }
@@ -101,30 +122,22 @@ function add_virtual_tool() {
 display_help() {
   cat <<-EOF
 
-Usage: virtualize [options] [COMMAND] [args]
+Usage: virtualize [COMMAND] [args]
 
 Commands:
 
   add <tool> [version]   Add the given virtualize tool, at the optional [verison]
-  rem <tool>             Remove the virtualize tool
-  list                   Show list of installed virtualize tools and their versions
 
 Options:
 
-  -V, --version         Output version of n
   -h, --help            Display help information
-
-Aliases:
-
-  remove: rem
-  ls: list
 
 Tools:
 
   node
   python
-  macports
   homebrew
+  macports
 
 EOF
 }
