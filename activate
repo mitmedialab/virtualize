@@ -41,7 +41,7 @@ VIRTUALIZE_ORIG_PATH="$PATH"
 VIRTUALIZE_ORIG_PS1="$PS1"
 export PATH=$VIRTUALIZE_ROOT/bin:$VIRTUALIZE_ROOT/virtualize/bin:$PATH
 
-VIRTUALIZE_ROOT_DISPLAY="`echo $VIRTUALIZE_ROOT | sed \"s%^$HOME/%%" | sed 's/\//·/g'`"
+VIRTUALIZE_ROOT_DISPLAY=$( echo $VIRTUALIZE_ROOT | sed \"s%^$HOME/%%" | sed 's/\//·/g' )
 if [[ $ZSH_VERSION ]]; then
    PS1="%{${SGR_BOLD_BLUE}%}[$VIRTUALIZE_ROOT_DISPLAY]%{${SGR_RESET}%}$PS1"
 else  # for bash (and others?)
