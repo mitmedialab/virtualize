@@ -59,6 +59,7 @@ for activate in virtualize*/activate; do
     VIRTUALIZE_LIST+=($VIRTUALIZE_ACTIVATING)
     unset VIRTUALIZE_ACTIVATING
 done
+unset activate
 
 function unactivate() {
     local unactivate
