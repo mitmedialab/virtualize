@@ -1,36 +1,19 @@
 #https://unix.stackexchange.com/a/153061
 VIRTUALIZE_SOURCED_NAME="$_"
 
-if [[ $BASH_SOURCE ]]; then
-    echo "You must source this script: \$ source $0" >&2
+if [[ ${BASH_SOURCE-} = $0 && ! $VIRTUALIZE_ACTIVATE_VIA_SCRIPT ]]; then
+    echo "you must source this script: \$ source $0" >&2
     exit 33
 fi
 
-# ANSI escape codes
-# https://en.wikipedia.org/wiki/ANSI_escape_code
-# https://no-color.org
-# https://bixense.com/clicolors
-
-# FIXME this leaks variables all over the place
-USE_COLOR="true"
-#readonly USE_COLOR
-# Select Graphic Rendition codes
-if [[ "${USE_COLOR}" = "true" ]]; then
-  # KISS and use codes rather than tput, avoid dealing with missing tput or TERM.
-  SGR_RESET="[0m"
-  SGR_FAINT="[2m"
-  SGR_RED="[31m"
-  SGR_BOLD_BLUE="[01;34m"  # bold+blue
-  SGR_CYAN="[36m"
-else
-  SGR_RESET=
-  SGR_FAINT=
-  SGR_RED=
-  SGR_CYAN=
+if [[ $VIRTUALIZE_ACTIVATE_VIA_SCRIPT ]]; then
+    # this assume the script doing the activating does a 'cd' into the
+    # directory where the activate file is is before sourcing it
+    VIRTUALIZE_SOURCED_NAME="./activate"
 fi
-
-if [[ ! -z $VIRTUALIZE_ROOT ]]; then
-    echo "${SGR_RED}This shell is already virtualized for $VIRTUALIZE_ROOT, type 'unactivate' to undo${SGR_RESET}"
+    
+if [[ $VIRTUALIZE_ROOT && ! $VIRTUALIZE_ACTIVATE_VIA_SCRIPT ]]; then
+    echo "this shell is already virtualized for $VIRTUALIZE_ROOT, type 'unactivate' to undo"
     return
 fi
 
@@ -41,11 +24,15 @@ VIRTUALIZE_ORIG_PATH="$PATH"
 VIRTUALIZE_ORIG_PS1="$PS1"
 export PATH="$VIRTUALIZE_ROOT/bin:$VIRTUALIZE_ROOT/virtualize/bin:$PATH"
 
+function sgr() {  # still leaks (or overrides) this one function name
+    $VIRTUALIZE_ROOT/virtualize/bin/sgr $1
+}
+
 VIRTUALIZE_ROOT_DISPLAY=$( echo $VIRTUALIZE_ROOT | sed "s%^$HOME/%%" | sed 's/\//·/g' )
 if [[ $ZSH_VERSION ]]; then
-   PS1="%{${SGR_BOLD_BLUE}%}[$VIRTUALIZE_ROOT_DISPLAY]%{${SGR_RESET}%}$PS1"
+   PS1="%{$(sgr boldblue)%}[$VIRTUALIZE_ROOT_DISPLAY]%{$(sgr reset)%}$PS1"
 else  # for bash (and others?)
-   PS1="${SGR_BOLD_BLUE}[$VIRTUALIZE_ROOT_DISPLAY]${SGR_RESET}\n$PS1"
+   PS1="$(sgr boldblue)[$VIRTUALIZE_ROOT_DISPLAY]$(sgr reset)\n$PS1"
 fi
 
 VIRTUALIZE_LIST=()
@@ -55,7 +42,10 @@ for activate in virtualize*/activate; do
     fi
     VIRTUALIZE_ACTIVATING=$(dirname $activate | sed 's/^virtualize-//')
     echo "activating $VIRTUALIZE_ACTIVATING"
+    # workaround bash behavior when sourced files source other files
+    VIRTUALIZE_SUBSOURCE="$activate"
     source $activate
+    unset VIRTUALIZE_SUBSOURCE
     VIRTUALIZE_LIST+=($VIRTUALIZE_ACTIVATING)
     unset VIRTUALIZE_ACTIVATING
 done

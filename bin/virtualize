@@ -12,6 +12,9 @@ function install_tool_node() {
     fi
 
     VERSION=16.13.2
+    if [[ $VIRTUALIZE_NODE_VERSION ]]; then
+        VERSION="$VIRTUALIZE_NODE_VERSION"
+    fi
     if [[ $2 ]]; then
         VERSION="$2"
     fi
@@ -42,6 +45,9 @@ function install_tool_python() {
     fi
 
     VERSION=3
+    if [[ $VIRTUALIZE_PYTHON_VERSION ]]; then
+        VERSION="$VIRTUALIZE_PYTHON_VERSION"
+    fi
     if [[ $2 ]]; then
         VERSION="$2"
     fi
