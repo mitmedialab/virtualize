@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# ANSI escape codes
+# https://en.wikipedia.org/wiki/ANSI_escape_code
+# https://no-color.org
+# https://bixense.com/clicolors
+
+# Select Graphic Rendition codes
+# KISS and use codes rather than tput, avoid dealing with missing tput or TERM.
+# initially taken from 'n' https://github.com/tj/n
+
+USE_COLOR="true"
+#readonly USE_COLOR
+
+SGR_RESET="[0m"
+SGR_FAINT="[2m"
+SGR_RED="[31m"
+SGR_BOLD_BLUE="[01;34m"  # bold+blue
+SGR_CYAN="[36m"
+
+case "$1" in
+    reset) echo -n "${SGR_RESET}"; exit;;
+    faint) echo -n "${SGR_FAINT}"; exit;;
+    red)   echo -n "${SGR_RED}"; exit;;
+    boldblue) echo "${SGR_BOLD_BLUE}"; exit;;
+    cyan)  echo -n "${SGR_CYAN}"; exit;;
+    *) exit;;
+esac

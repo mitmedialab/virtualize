@@ -31,6 +31,9 @@ else
     cat >>$VIRTUALIZE_ROOT/setup.sh <<-EOF
 	#!/bin/sh
 
+	#export VIRTUALIZE_NODE_VERSION=16.13.2
+	#export VIRTUALIZE_PYTHON_VERSION=3
+
 	# install git submodules
 	git submodule init
 	git submodule update
