@@ -21,10 +21,10 @@ function install_tool_node() {
     (
         cd $VIRTUALIZE_ROOT
         git submodule add git@github.com:mitmedialab/local-node-install.git virtualize-node
-        #./node/install.sh $VIRTUALIZE_ROOT/virtualize-node/node $VERSION
+        #./node/setup.sh $VIRTUALIZE_ROOT/virtualize-node/node $VERSION
         cd $VIRTUALIZE_ROOT/virtualize-node
 	git checkout jon/virtualize  # FIXME take this off when jon/virtualize is merged into main
-        ./install.sh $VERSION
+        ./setup.sh $VERSION
     )
     echo
     echo "before you can use node in your shell you will need to:"
@@ -55,7 +55,7 @@ function install_tool_python() {
         cd $VIRTUALIZE_ROOT
         git submodule add git@github.com:mitmedialab/virtualize-python
         cd $VIRTUALIZE_ROOT/virtualize-python
-        ./install.sh $VERSION
+        ./setup.sh $VERSION
     )
     echo
     echo "before you can use python your shell you will need to:"
@@ -80,7 +80,7 @@ function install_tool_homebrew() {
         cd $VIRTUALIZE_ROOT
         git submodule add git@github.com:mitmedialab/virtualize-homebrew
         cd $VIRTUALIZE_ROOT/virtualize-homebrew
-        ./install.sh
+        ./setup.sh
     )
     echo
     echo "before you can use brew (homebrew) in your shell you will need to:"
@@ -105,7 +105,7 @@ function install_tool_macports() {
         cd $VIRTUALIZE_ROOT
         git submodule add git@github.com:mitmedialab/virtualize-macports
         cd $VIRTUALIZE_ROOT/virtualize-macports
-        ./install.sh
+        ./setup.sh
     )
     echo
     echo "before you can use port (macports) in your shell you will need to:"
