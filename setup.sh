@@ -9,13 +9,13 @@ fi
 VIRTUALIZE_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE}" )" &> /dev/null && pwd )
 VIRTUALIZE_ROOT=$( dirname -- "${VIRTUALIZE_DIR}" )
 
-for install in $VIRTUALIZE_ROOT/virtualize*/install.sh; do
-    if [[ $install == "$VIRTUALIZE_ROOT/virtualize/install.sh" ]]; then
+for setup in $VIRTUALIZE_ROOT/virtualize*/setup.sh; do
+    if [[ $setup == "$VIRTUALIZE_ROOT/virtualize/setup.sh" ]]; then
        continue
     fi
-    shortname=$( dirname $install | sed 's/^virtualize-//' )
+    shortname=$( dirname $setup | sed 's/^virtualize-//' )
     echo "installing $shortname"
-    ( $install ) >/dev/null
+    ( $setup ) >/dev/null
 done
 
 if [[ -e $VIRTUALIZE_ROOT/activate ]]; then
@@ -25,29 +25,48 @@ else
     echo "installed ./activate file"
 fi
 
-if [[ -e $VIRTUALIZE_ROOT/install.sh ]]; then
-    echo "install.sh exists, skipping making install.sh template"
+if [[ -e $VIRTUALIZE_ROOT/setup.sh ]]; then
+    echo "setup.sh exists, skipping making setup.sh template"
 else
-    cat >>$VIRTUALIZE_ROOT/install.sh <<-EOF
+    cat >>$VIRTUALIZE_ROOT/setup.sh <<-EOF
 	#!/bin/sh
 
 	# install git submodules
 	git submodule init
 	git submodule update
-	virtualize/install.sh
+	virtualize/setup.sh
 
 	### as you add virtualize modules (node, python, etc...) you will
 	### probably want to edit the following sections and enable them
 
+	source ./activate
+
 	### node
-	# yarn install
+	if [[ -f package.json && -d virtualize-node ]]; then
+	    yarn install
+	fi   
 
 	### python
-	# pip install -f requirments.txt
-EOF
-    chmod +x $VIRTUALIZE_ROOT/install.sh
+	if [[ -f requirements.txt && -d virtualize-python ]]; then
+	    pip install -f requirments.txt
+	fi
 
-    echo "added install.sh template, edit it to suit your project"
+	### miniconda
+	if [[ -f environment.yml && -d virtualize-miniconda ]]; then
+	    conda env create --file $VIRTUALIZE_ROOT/environment.yml
+	fi
+
+	### homebrew
+	if [[ -f Brewfile && -d virtualize-homebrew ]]; then
+	    brew bundle --file Brewfile
+	fi
+
+        ### macports
+        # unknown
+EOF
+    chmod +x $VIRTUALIZE_ROOT/setup.sh
+
+    echo "added initial setup.sh script, edit it to suit your project"
 fi
 
 echo

@@ -11,13 +11,13 @@ To add virtualize to the git repo for your project:
 
 ```
 git submodule add git@github.com:mitmedialab/virtualize
-virtualize/install.sh
+virtualize/setup.sh
 ```
 
-The install script will create an `activate` script, and an `install.sh` script. Be sure to commit these into your project, along with the added submodules:
+The setup script will create an `activate` script, and an `setup.sh` script. Be sure to commit these into your project, along with the added submodules:
 
 ```
-git add activate install.sh
+git add activate setup.sh
 git commit -m "added virtualize"
 ```
 
@@ -36,7 +36,7 @@ $
 
 You can type `unactivate` to disable the activation, or you can just close your shell and open a new one.
 
-The `install.sh` script is meant to be used as a first step after a fresh `git clone` of your project. It installs the virtualize tool submodules you have added and sets them up. It is a starting template file and you can modify it to do any additional setup for your project.
+The `setup.sh` script is meant to be used as a first step after a fresh `git clone` of your project. It installs the virtualize tool submodules you have added and sets them up. It is a starting template file and you can modify it to do any additional setup for your project.
 
 Once you have `virtualize` installed (and have activated it with `source ./activate`) you can add one or more of the supported virtualize tools.
 
