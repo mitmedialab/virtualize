@@ -20,10 +20,9 @@ function install_tool_node() {
     fi
     (
         cd $VIRTUALIZE_ROOT
-        git submodule add git@github.com:mitmedialab/local-node-install.git virtualize-node
+        git submodule add git@github.com:mitmedialab/virtualize-node.git
         #./node/setup.sh $VIRTUALIZE_ROOT/virtualize-node/node $VERSION
         cd $VIRTUALIZE_ROOT/virtualize-node
-	git checkout jon/virtualize  # FIXME take this off when jon/virtualize is merged into main
         ./setup.sh $VERSION
     )
     echo
