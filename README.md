@@ -4,6 +4,7 @@ Tools for virtualizing your Mac development environment
 Currently supported tools:
  - node
  - python
+ - miniconda
  - homebrew
  - macports
 

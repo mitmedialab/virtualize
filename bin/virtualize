@@ -57,9 +57,41 @@ function install_tool_python() {
         ./setup.sh $VERSION
     )
     echo
-    echo "before you can use python your shell you will need to:"
+    echo "before you can use python in your shell you will need to:"
     echo "  unactivate"
     echo "  source ./activate"
+}
+
+
+function install_tool_miniconda() {
+    if [[ ! $VIRTUALIZE_ROOT ]]; then
+        echo "Error: VIRTUALIZE_ROOT not found, something is wrong"
+        exit 33;
+    fi
+
+    if [[ -d $VIRTUALIZE_ROOT/virtualize-miniconda ]]; then
+        echo "virtualize-miniconda seems to already be installed"
+        exit
+    fi
+
+    VERSION="3-py38_4.12.0"
+    if [[ $VIRTUALIZE_MINICONDA_VERSION ]]; then
+        VERSION="$VIRTUALIZE_MINICONDA_VERSION"
+    fi
+    if [[ $2 ]]; then
+        VERSION="$2"
+    fi
+    (
+        cd $VIRTUALIZE_ROOT
+        git submodule add git@github.com:mitmedialab/virtualize-miniconda
+        cd $VIRTUALIZE_ROOT/virtualize-miniconda
+        ./setup.sh $VERSION
+    )
+    echo
+    echo "before you can use miniconda in your shell you will need to:"
+    echo "  unactivate"
+    echo "  source ./activate"
+    echo "(and you will probably need to activate a conda project)"
 }
 
 
@@ -117,6 +149,7 @@ function add_virtual_tool() {
     case "$1" in
         node) install_tool_node "$@"; exit ;;
         python) install_tool_python "$@"; exit ;;
+        miniconda|conda) install_tool_miniconda "$@"; exit ;;
         macports) install_tool_macports "$@"; exit ;;
         homebrew) install_tool_homebrew "$@"; exit ;;
         *) echo "unknown tool $1, type 'virtualize help' for list of tools"; exit ;;
@@ -141,6 +174,7 @@ Tools:
 
   node
   python
+  miniconda
   homebrew
   macports
 
