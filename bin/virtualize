@@ -26,9 +26,8 @@ function install_tool_node() {
         ./setup.sh $VERSION
     )
     echo
-    echo "before you can use node in your shell you will need to:"
-    echo "  unactivate"
-    echo "  source ./activate"
+    echo "before you can use node in your shell you will need to type:"
+    echo "  reactivate"
 }
 
 
@@ -57,9 +56,8 @@ function install_tool_python() {
         ./setup.sh $VERSION
     )
     echo
-    echo "before you can use python in your shell you will need to:"
-    echo "  unactivate"
-    echo "  source ./activate"
+    echo "before you can use python in your shell you will need to type:"
+    echo "  reactivate"
 }
 
 
@@ -88,35 +86,9 @@ function install_tool_miniconda() {
         ./setup.sh $VERSION
     )
     echo
-    echo "before you can use miniconda in your shell you will need to:"
-    echo "  unactivate"
-    echo "  source ./activate"
+    echo "before you can use miniconda in your shell you will need to type:"
+    echo "  reactivate"
     echo "(and you will probably need to activate a conda project)"
-}
-
-
-function install_tool_homebrew() {
-    #FIXME ignoring version for now
-    if [[ ! $VIRTUALIZE_ROOT ]]; then
-        echo "Error: VIRTUALIZE_ROOT not found, something is wrong"
-        exit 33;
-    fi
-
-    if [[ -d $VIRTUALIZE_ROOT/virtualize-homebrew ]]; then
-        echo "virtualize-homebrew seems to already be installed"
-        exit
-    fi
-
-    (
-        cd $VIRTUALIZE_ROOT
-        git submodule add git@github.com:mitmedialab/virtualize-homebrew
-        cd $VIRTUALIZE_ROOT/virtualize-homebrew
-        ./setup.sh
-    )
-    echo
-    echo "before you can use brew (homebrew) in your shell you will need to:"
-    echo "  unactivate"
-    echo "  source ./activate"
 }
 
 
@@ -139,9 +111,56 @@ function install_tool_macports() {
         ./setup.sh
     )
     echo
-    echo "before you can use port (macports) in your shell you will need to:"
-    echo "  unactivate"
-    echo "  source ./activate"
+    echo "before you can use port (macports) in your shell you will need to type:"
+    echo "  reactivate"
+}
+
+
+function install_tool_homebrew() {
+    #FIXME ignoring version for now
+    if [[ ! $VIRTUALIZE_ROOT ]]; then
+        echo "Error: VIRTUALIZE_ROOT not found, something is wrong"
+        exit 33;
+    fi
+
+    if [[ -d $VIRTUALIZE_ROOT/virtualize-homebrew ]]; then
+        echo "virtualize-homebrew seems to already be installed"
+        exit
+    fi
+
+    (
+        cd $VIRTUALIZE_ROOT
+        git submodule add git@github.com:mitmedialab/virtualize-homebrew
+        cd $VIRTUALIZE_ROOT/virtualize-homebrew
+        ./setup.sh
+    )
+    echo
+    echo "before you can use brew (homebrew) in your shell you will need to type:"
+    echo "  reactivate"
+}
+
+
+function install_tool_rust() {
+    #FIXME ignoring version for now
+    if [[ ! $VIRTUALIZE_ROOT ]]; then
+        echo "Error: VIRTUALIZE_ROOT not found, something is wrong"
+        exit 33;
+    fi
+
+    if [[ -d $VIRTUALIZE_ROOT/virtualize-rust ]]; then
+        echo "virtualize-rust seems to already be installed"
+        exit
+    fi
+
+    (
+        cd $VIRTUALIZE_ROOT
+        git submodule add git@github.com:mitmedialab/virtualize-rust
+        cd $VIRTUALIZE_ROOT/virtualize-rust
+        ./setup.sh
+    )
+    echo
+    echo "before you can use rust in your shell you will need to type:"
+    echo "  reactivate"
 }
 
 
@@ -150,8 +169,9 @@ function add_virtual_tool() {
         node) install_tool_node "$@"; exit ;;
         python) install_tool_python "$@"; exit ;;
         miniconda|conda) install_tool_miniconda "$@"; exit ;;
-        macports) install_tool_macports "$@"; exit ;;
-        homebrew) install_tool_homebrew "$@"; exit ;;
+        macports|port) install_tool_macports "$@"; exit ;;
+        homebrew|brew) install_tool_homebrew "$@"; exit ;;
+        rust) install_tool_rust "$@"; exit ;;
         *) echo "unknown tool $1, type 'virtualize help' for list of tools"; exit ;;
     esac
 }
@@ -177,6 +197,7 @@ Tools:
   miniconda
   homebrew
   macports
+  rust
 
 EOF
 }

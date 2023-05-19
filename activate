@@ -69,7 +69,16 @@ function unactivate() {
     local virtualize_root="$VIRTUALIZE_ROOT"
     unset VIRTUALIZE_ROOT
     unset -f unactivate
+    unalias deactivate
+    unset -f reactivate
     echo "unactivated $virtualize_root"
+}
+
+alias deactivate=unactivate
+
+function reactivate() {
+    unactivate
+    source ./activate
 }
 
 echo "type 'unactivate' to undo"
