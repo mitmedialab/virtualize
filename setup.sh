@@ -29,40 +29,40 @@ if [[ -e $VIRTUALIZE_ROOT/setup.sh ]]; then
     echo "setup.sh exists, skipping making setup.sh template"
 else
     cat >>$VIRTUALIZE_ROOT/setup.sh <<-EOF
-	#!/bin/sh
+        #!/bin/sh
 
-	#export VIRTUALIZE_NODE_VERSION=16.13.2
-	#export VIRTUALIZE_PYTHON_VERSION=3
+        #export VIRTUALIZE_NODE_VERSION=16.13.2
+        #export VIRTUALIZE_PYTHON_VERSION=3
 
-	# install git submodules
-	git submodule init
-	git submodule update
-	virtualize/setup.sh
+        # install git submodules
+        git submodule init
+        git submodule update
+        virtualize/setup.sh
 
-	### as you add virtualize modules (node, python, etc...) you will
-	### probably want to edit the following sections and enable them
+        ### as you add virtualize modules (node, python, etc...) you will
+        ### probably want to edit the following sections and enable them
 
-	source ./activate
+        source ./activate
 
-	### node
-	if [[ -f package.json && -d virtualize-node ]]; then
-	    yarn install
-	fi   
+        ### node
+        if [[ -f package.json && -d virtualize-node ]]; then
+            yarn install
+        fi   
 
-	### python
-	if [[ -f requirements.txt && -d virtualize-python ]]; then
-	    pip install -f requirments.txt
-	fi
+        ### python
+        if [[ -f requirements.txt && -d virtualize-python ]]; then
+            pip install -f requirments.txt
+        fi
 
-	### miniconda
-	if [[ -f environment.yml && -d virtualize-miniconda ]]; then
-	    conda env create --file $VIRTUALIZE_ROOT/environment.yml
-	fi
+        ### miniconda
+        if [[ -f environment.yml && -d virtualize-miniconda ]]; then
+            conda env create --file $VIRTUALIZE_ROOT/environment.yml
+        fi
 
-	### homebrew
-	if [[ -f Brewfile && -d virtualize-homebrew ]]; then
-	    brew bundle --file Brewfile
-	fi
+        ### homebrew
+        if [[ -f Brewfile && -d virtualize-homebrew ]]; then
+            brew bundle --file Brewfile
+        fi
 
         ### macports
         # unknown

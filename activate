@@ -1,5 +1,5 @@
 #https://unix.stackexchange.com/a/153061
-VIRTUALIZE_SOURCED_NAME="$_"
+VIRTUALIZE_SOURCED_NAME="${_:-$BASH_SOURCE}"  # must do this first because of $_ ambiguity
 
 if [[ ${BASH_SOURCE-} = $0 && ! $VIRTUALIZE_ACTIVATE_VIA_SCRIPT ]]; then
     echo "you must source this script: \$ source $0" >&2

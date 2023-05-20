@@ -184,7 +184,7 @@ Usage: virtualize [COMMAND] [args]
 
 Commands:
 
-  add <tool> [version]   Add the given virtualize tool, at the optional [verison]
+  add <tool> [version]   Add the given virtualize tool, at the optional [version]
 
 Options:
 
