@@ -7,6 +7,7 @@ Currently supported tools:
  - miniconda
  - homebrew
  - macports
+ - rust
 
 ## Installing
 To add virtualize to the git repo for your project:
