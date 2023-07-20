@@ -25,10 +25,10 @@ VIRTUALIZE_ORIG_PS1="$PS1"
 export PATH="$VIRTUALIZE_ROOT/bin:$VIRTUALIZE_ROOT/virtualize/bin:$PATH"
 
 function sgr() {  # still leaks (or overrides) this one function name
-    $VIRTUALIZE_ROOT/virtualize/bin/sgr $1
+    "$VIRTUALIZE_ROOT"/virtualize/bin/sgr $1
 }
 
-VIRTUALIZE_ROOT_DISPLAY=$( echo $VIRTUALIZE_ROOT | sed "s%^$HOME/%%" | sed 's/\//·/g' )
+VIRTUALIZE_ROOT_DISPLAY=$( echo "$VIRTUALIZE_ROOT" | sed "s%^$HOME/%%" | sed 's/\//·/g' )
 if [[ $ZSH_VERSION ]]; then
    PS1="%{$(sgr boldblue)%}[$VIRTUALIZE_ROOT_DISPLAY]%{$(sgr reset)%}$PS1"
 else  # for bash (and others?)
