@@ -13,7 +13,7 @@ Currently supported tools:
 To add virtualize to the git repo for your project:
 
 ```
-git submodule add git@github.com:mitmedialab/virtualize
+git submodule add https://github.com/mitmedialab/virtualize
 virtualize/setup.sh
 ```
 

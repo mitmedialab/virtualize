@@ -20,7 +20,7 @@ function install_tool_node() {
     fi
     (
         cd $VIRTUALIZE_ROOT
-        git submodule add git@github.com:mitmedialab/virtualize-node.git
+        git submodule add https://github.com/mitmedialab/virtualize-node.git
         #./node/setup.sh $VIRTUALIZE_ROOT/virtualize-node/node $VERSION
         cd $VIRTUALIZE_ROOT/virtualize-node
         ./setup.sh $VERSION
@@ -51,7 +51,7 @@ function install_tool_python() {
     fi
     (
         cd $VIRTUALIZE_ROOT
-        git submodule add git@github.com:mitmedialab/virtualize-python
+        git submodule add https://github.com/mitmedialab/virtualize-python
         cd $VIRTUALIZE_ROOT/virtualize-python
         ./setup.sh $VERSION
     )
@@ -81,7 +81,7 @@ function install_tool_miniconda() {
     fi
     (
         cd $VIRTUALIZE_ROOT
-        git submodule add git@github.com:mitmedialab/virtualize-miniconda
+        git submodule add https://github.com/mitmedialab/virtualize-miniconda
         cd $VIRTUALIZE_ROOT/virtualize-miniconda
         ./setup.sh $VERSION
     )
@@ -106,7 +106,7 @@ function install_tool_macports() {
 
     (
         cd $VIRTUALIZE_ROOT
-        git submodule add git@github.com:mitmedialab/virtualize-macports
+        git submodule add https://github.com/mitmedialab/virtualize-macports
         cd $VIRTUALIZE_ROOT/virtualize-macports
         ./setup.sh
     )
@@ -130,7 +130,7 @@ function install_tool_homebrew() {
 
     (
         cd $VIRTUALIZE_ROOT
-        git submodule add git@github.com:mitmedialab/virtualize-homebrew
+        git submodule add https://github.com/mitmedialab/virtualize-homebrew
         cd $VIRTUALIZE_ROOT/virtualize-homebrew
         ./setup.sh
     )
@@ -154,7 +154,7 @@ function install_tool_rust() {
 
     (
         cd $VIRTUALIZE_ROOT
-        git submodule add git@github.com:mitmedialab/virtualize-rust
+        git submodule add https://github.com/mitmedialab/virtualize-rust
         cd $VIRTUALIZE_ROOT/virtualize-rust
         ./setup.sh
     )
