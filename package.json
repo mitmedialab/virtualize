@@ -1,0 +1,8 @@
+{
+  "name": "virtualize",
+  "version": "1.0.0",
+  "bin": "setup.sh  # for installing via npx",
+  "repository": "git@github.com:mitmedialab/virtualize",
+  "author": "Jon Ferguson <jon@jef.us>",
+  "license": "MIT"
+}

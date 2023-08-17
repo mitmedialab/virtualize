@@ -1,6 +1,11 @@
 #!/bin/bash
 
-if [[ ! $BASH_SOURCE ]]; then
+if [[ $npm_lifecycle_event == "npx" ]]; then
+    echo "installing via npx..."
+    git submodule add https://github.com/mitmedialab/virtualize
+    ./virtualize/setup.sh
+    exit $?
+elif [[ ! $BASH_SOURCE ]]; then
     echo "You cannot source this script. Run it as ./$0" >&2
     exit 33
 fi
