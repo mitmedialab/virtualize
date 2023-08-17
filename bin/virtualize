@@ -1,5 +1,13 @@
 #!/bin/bash
 
+if [[ $npm_lifecycle_event == "npx" ]]; then
+    echo "installing via npx..."
+    git submodule add https://github.com/mitmedialab/virtualize
+    ./virtualize/setup.sh
+    exit $?
+fi
+
+
 function install_tool_node() {
     if [[ ! $VIRTUALIZE_ROOT ]]; then
         echo "Error: VIRTUALIZE_ROOT not found, something is wrong"
