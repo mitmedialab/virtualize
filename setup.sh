@@ -3,6 +3,7 @@
 if [[ $npm_lifecycle_event == "npx" ]]; then
     echo "installing via npx..."
     git submodule add https://github.com/mitmedialab/virtualize
+    unset npm_lifecycle_event
     ./virtualize/setup.sh
     exit $?
 elif [[ ! $BASH_SOURCE ]]; then
