@@ -63,20 +63,22 @@ Here is a handy function you can add to your `.zshrc` if you are using `zsh` (wh
 ```
 function chpwd() {
     if [[ ! $VIRTUALIZE_ROOT && ! $VIRTUAL_ENV && ! $check_for_activate ]]; then
-	original_pwd="$PWD"
-	check_for_activate="$PWD"
-	while [ "$check_for_activate" != "/" ]; do
-	    if [ -e "$check_for_activate/activate" ]; then
-		echo "activating $check_for_activate/activate"
-		cd "$check_for_activate"
-		source ./activate
-		cd "$original_pwd"
-		break
-	    fi
-	    check_for_activate=`dirname "$check_for_activate"`
-	done
-	unset check_for_activate
-	unset original_pwd
+        original_pwd="$PWD"
+        original_oldpwd="$OLDPWD"
+        check_for_activate="$PWD"
+        while [ "$check_for_activate" != "/" ]; do
+            if [ -e "$check_for_activate/activate" ]; then
+                echo "activating $check_for_activate/activate"
+                cd "$check_for_activate"
+                source ./activate
+                cd "$original_pwd"
+                OLDPAD="$original_oldpwd"
+                break
+            fi
+            check_for_activate=`dirname "$check_for_activate"`
+        done
+        unset check_for_activate
+        unset original_pwd
     fi
 }
 ```
