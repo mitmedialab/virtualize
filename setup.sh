@@ -37,7 +37,7 @@ else
     # note: tabs are part of the indention removal for heredocs, don't untabify
     # https://stackoverflow.com/a/33817423
     cat >>"$VIRTUALIZE_ROOT"/setup.sh <<-EOF
-	#!/bin/sh
+	#!/bin/bash
 
 	#export VIRTUALIZE_NODE_VERSION=16.13.2
 	#export VIRTUALIZE_PYTHON_VERSION=3
