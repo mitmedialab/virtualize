@@ -41,6 +41,7 @@ else
 
 	#export VIRTUALIZE_NODE_VERSION=16.13.2
 	#export VIRTUALIZE_PYTHON_VERSION=3
+	#export VIRTUALIZE_MINICONDA_VERSION="3-py38_4.12.0"
 
 	# install git submodules
 	git submodule init

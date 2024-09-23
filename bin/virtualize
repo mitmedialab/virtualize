@@ -70,6 +70,36 @@ function install_tool_python() {
 }
 
 
+function install_tool_pyenv() {
+    if [[ ! $VIRTUALIZE_ROOT ]]; then
+        echo "Error: VIRTUALIZE_ROOT not found, something is wrong"
+        exit 33;
+    fi
+
+    if [[ -d $VIRTUALIZE_ROOT/virtualize-pyenv ]]; then
+        echo "virtualize-pyenv seems to already be installed"
+        exit
+    fi
+
+    VERSION=latest
+    if [[ $VIRTUALIZE_PYTHON_VERSION ]]; then
+        VERSION="$VIRTUALIZE_PYTHON_VERSION"
+    fi
+    if [[ $2 ]]; then
+        VERSION="$2"
+    fi
+    (
+        cd $VIRTUALIZE_ROOT
+        git submodule add https://github.com/mitmedialab/virtualize-pyenv
+        cd $VIRTUALIZE_ROOT/virtualize-pyenv
+        ./setup.sh $VERSION
+    )
+    echo
+    echo "before you can use python or pyenv in your shell you will need to type:"
+    echo "  reactivate"
+}
+
+
 function install_tool_miniconda() {
     if [[ ! $VIRTUALIZE_ROOT ]]; then
         echo "Error: VIRTUALIZE_ROOT not found, something is wrong"
