@@ -81,7 +81,7 @@ function install_tool_pyenv() {
         exit
     fi
 
-    VERSION=latest
+    VERSION=3.12.6
     if [[ $VIRTUALIZE_PYTHON_VERSION ]]; then
         VERSION="$VIRTUALIZE_PYTHON_VERSION"
     fi
