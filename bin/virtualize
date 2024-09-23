@@ -177,6 +177,7 @@ function add_virtual_tool() {
     case "$1" in
         node) install_tool_node "$@"; exit ;;
         python) install_tool_python "$@"; exit ;;
+        pyenv) install_tool_pyenv "$@"; exit ;;
         miniconda|conda) install_tool_miniconda "$@"; exit ;;
         macports|port) install_tool_macports "$@"; exit ;;
         homebrew|brew) install_tool_homebrew "$@"; exit ;;
@@ -203,6 +204,7 @@ Tools:
 
   node
   python
+  pyenv
   miniconda
   homebrew
   macports
